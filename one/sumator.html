@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Sabiranje brojeva</h1>
+    <button onclick="execute()">Click me please</button>
+    <p id="demo"></p>
+    <script>
+      function execute() {
+        const number1 = window.prompt("Unesi prvi broj");// String
+        const number2 = window.prompt("Unesi drugi broj");
+        const number2AsFloat = parseFloat(number2);
+        const number1AsNumber = parseInt(number1); // number
+        const number2AsNumber = parseInt(number2);
+        const result = number1AsNumber + number2AsNumber;
+        const comparingResult = number1 === number1AsNumber;// true ==  ali false ===
+        const comparingNumber2 = number2AsNumber === number2AsFloat;//true,false
+        document.getElementById("demo").innerHTML = `${comparingNumber2} <--`;
+      }
+    </script>
+  </body>
+</html>

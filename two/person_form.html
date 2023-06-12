@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body onload="onRefreshPage()">
+    <h1 style="text-align: center; margin: 15px">Demo FORM & TABLE</h1>
+    <form
+      style="margin: 10px"
+      id="person_form"
+      action="#"
+      onsubmit="addPerson()"
+    >
+      <input id="name_input" type="text" placeholder="Enter name.." />
+      <input id="surname_input" type="text" placeholder="Enter surname.." />
+      <input id="nin_input" type="number" placeholder="Enter JMBG.." />
+      <input id="birthday_input" type="date" placeholder="Enter name.." />
+      <input type="submit" value="Add Person" />
+    </form>
+    <div class="table-responsive">
+      <table class="table" style="margin: 20px">
+        <thead>
+          <th>Name</th>
+          <th>Surname</th>
+          <th>JMBG</th>
+          <th>Birthday</th>
+        </thead>
+        <tbody id="person_table_body"></tbody>
+      </table>
+    </div>
+
+    <script>
+      class Person {
+        constructor(name, surname, nin, birthday) {
+          this.name = name;
+          this.surname = surname;
+          this.nin = nin;
+          this.birthday = birthday;
+        }
+      }
+
+      function addPerson() {
+        const personForm = document.forms["person_form"];
+        let nameInput = personForm["name_input"];
+        //unesene vrijednosti
+
+        let nameInputValue = nameInput.value;
+        let surnameInputValue = personForm["surname_input"].value;
+        let ninInputValue = personForm["nin_input"].value;
+        let birthdayInputValue = personForm["birthday_input"].value;
+        const personObject = new Person(
+          nameInputValue,
+          surnameInputValue,
+          ninInputValue,
+          birthdayInputValue
+        );
+        addPersonToLocalStorage(personObject);
+        addPersonTableRow(personObject);
+        clearPersonInputs(personForm);
+      }
+
+      function addPersonToLocalStorage(personObject) {
+        localStorage.setItem(personObject.nin, JSON.stringify(personObject));
+      }
+
+      function clearPersonInputs(personForm) {
+        personForm["name_input"].value = "";
+        personForm["surname_input"].value = "";
+        personForm["nin_input"].value = "";
+        personForm["birthday_input"].value = "";
+      }
+
+      function onRefreshPage() {
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            const personAsJsonContent = localStorage.getItem(key);
+            const personObject = JSON.parse(personAsJsonContent);
+            addPersonTableRow(personObject);
+        }
+      }
+
+      function addPersonTableRow(person) {
+        const personTableBody = document.getElementById("person_table_body");
+        const tr = document.createElement("tr"); //<tr></tr>
+
+        const tdName = document.createElement("td"); //<td></td>
+        const textNodeName = document.createTextNode(person.name); //"Alden"
+        tdName.appendChild(textNodeName);
+        tr.appendChild(tdName);
+
+        const tdSurname = document.createElement("td");
+        const textNodeSurname = document.createTextNode(person.surname);
+        tdSurname.appendChild(textNodeSurname);
+        tr.appendChild(tdSurname);
+
+        const tdNin = document.createElement("td");
+        const textNodeNin = document.createTextNode(person.nin);
+        tdNin.appendChild(textNodeNin);
+        tr.appendChild(tdNin);
+
+        const tdBirthday = document.createElement("td");
+        const textNodeBirthday = document.createTextNode(person.birthday);
+        tdBirthday.appendChild(textNodeBirthday);
+        tr.appendChild(tdBirthday);
+
+        personTableBody.appendChild(tr);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <table id="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Town Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Ovdje će JavaScript preko AJAX poziva ažurirati ne kompletan html page nego samo ovu tabelu-->
+      </tbody>
+    </table>
+    <script>
+      const town = {
+        name: "Glamoć",
+        country: {
+          id: 1,
+          name: "Bosna i Hercegovina",
+        },
+      };
+      const headerBodyParams = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Basic aXZpY2E6aXZpY2ExMjM=",
+        },
+        body: JSON.stringify(town),
+      };
+      fetch(
+        "http://localhost:8080/organization-1.0-SNAPSHOT/api/towns",
+        headerBodyParams
+      );
+
+      const fetchObjectParams = {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Basic aXZpY2E6aXZpY2ExMjM=",
+        },
+      };
+      //Fetch
+      fetch(
+        "http://localhost:8080/organization-1.0-SNAPSHOT/api/towns",
+        fetchObjectParams
+      )
+        .then((response) => response.json())
+        .then((towns) => {
+          const tableBody = document.querySelector("#data-table tbody");
+          towns.forEach((town) => {
+            const row = document.createElement("tr");
+
+            const idCell = document.createElement("td");
+            idCell.textContent = town.id;
+            row.appendChild(idCell);
+
+            const nameCell = document.createElement("td");
+            nameCell.textContent = town.name;
+            row.appendChild(nameCell);
+
+            tableBody.appendChild(row);
+          });
+        });
+    </script>
+  </body>
+</html>

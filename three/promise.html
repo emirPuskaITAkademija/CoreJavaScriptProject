@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Obećanja ili Promises</h1>
+    <input id="inputNumber" placeholder="Unesi broj.." type="number" />
+    <p id="demo"></p>
+    <button onclick="konzumirajObecanje()">Obecanje</button>
+
+    <script>
+      function obradiRezultat(result) {
+        let demoParagraf = document.getElementById("demo");
+        demoParagraf.style = "color:green";
+        demoParagraf.innerHTML = result;
+      }
+      function obradiError(result) {
+        let demoParagraf = document.getElementById("demo");
+        demoParagraf.style = "color:red";
+        demoParagraf.innerHTML = result;
+      }
+
+
+
+
+
+      function konzumirajObecanje() {
+        let obecanje = new Promise(function (resolve, reject) {
+          let inputX = document.getElementById("inputNumber").value;
+          console.log(inputX + "   <<---- sta se desava");
+          if (inputX == 0) {
+            reject("Dijeljenje s nulom nema smisla");
+          } else {
+            let result = 24 / inputX;
+            resolve(`Rezultat dijeljenja ${result}`);
+          }
+        });
+
+
+        obecanje.then(obradiRezultat, obradiError);
+      }
+    </script>
+  </body>
+</html>

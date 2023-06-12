@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Persons</h1>
+    <p id="demo"></p>
+    <script>
+      class Person {
+        constructor(name, surname, year) {
+          this.name = name;
+          this.surname = surname;
+          this.year = year;
+        }
+
+        age() {
+          const trenutniDatum = new Date();
+          const age = trenutniDatum.getFullYear() - this.year
+          return age;
+        }
+
+        age(x) {
+          return x - this.year;
+        }
+      }
+      const p1 = new Person("Mirsad", "Škandro", 2000);
+      const p2 = new Person("Ivica", "Stanić", 1980);
+      const p3 = new Person("Anja", "Tešanović", 1990);
+      //  ""  '' ``
+      const age = p3.age(2023);
+      document.getElementById(
+        "demo"
+      ).innerHTML = `${p3.name} ima ${p3.age(2023)-3} godina/e`;
+    </script>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <h1>Prva JS Web Stranica</h1>
+    <p id="prazan"></p>
+    <button onclick="prikaziVrijeme()">Klikni na mene</button>
+    <script>
+        //JS kod
+        function prikaziVrijeme(){
+            //System.out.println("Hello World");
+            //var, let, const, bez ključne riječi
+            let prazanParagraf = document.getElementById("prazan");
+            let trenutnoVrijeme = new Date();
+            prazanParagraf.innerHTML = trenutnoVrijeme;
+            console.log("Hello World");
+        }
+    </script>
+</body>
+</html>
