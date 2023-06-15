@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pageable Data Table</title>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <table id="data-table" class="table">
+      <thead>
+        <tr>
+          <th>Town ID</th>
+          <th>Town Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Redove u tabeli će JavaScript kod kreirati-->
+      </tbody>
+    </table>
+    <div id="paginationDiv" class="pagination"></div>
+    <script>
+      const baseUrl = "http://localhost:8080/organization-1.0-SNAPSHOT";
+      function createRequestObject() {
+        const requestObject = {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Basic aXZpY2E6aXZpY2ExMjM=",
+          },
+        };
+        return requestObject;
+      }
+
+      function loadPaginatedTowns(page, pageSize) {
+        const zahtjev = createRequestObject();
+        const adresa = `${baseUrl}/api/towns?page=${page}&pageSize=${pageSize}`;
+        fetch(adresa, zahtjev)
+          .then((response) => response.json())
+          .catch((error) => alert(error))
+          .then(buildTableRowsAndPagination)
+          .catch((error) => alert(error));
+      }
+
+      function buildTableRowsAndPagination(townPage) {
+        buildTableRows(townPage); //townPage.towns
+        buildPaginationDiv(townPage); //townPage.totalPages
+      }
+
+      function buildPaginationDiv(townPage) {
+        //kolko dugmića treba u paginationDiv ? townPage.totalPages
+        const totalPages = townPage.totalPages;
+        //pristupiti html elementu
+        const paginationDiv = document.getElementById("paginationDiv");
+        paginationDiv.innerHTML="";
+        //dodajemo pagination linkove
+        for (let i = 1; i <= totalPages; i++) {
+          //<a href="url">1</a>
+          const link = document.createElement("a");
+          //link.href = `${baseUrl}/api/towns?page=${i}&pageSize=5`;
+          link.textContent = i;
+          link.className = "btn btn-secondary btn-sm m-2";
+          link.addEventListener("click", () => {
+            loadPaginatedTowns(i, 5);
+          });
+          paginationDiv.appendChild(link);
+        }
+      }
+
+      function loadTowns() {
+        //zahtjev=zaglavlje+tijelo(header, body)
+        const zahtjev = createRequestObject();
+        //adresa url
+        const adresa = `${baseUrl}/api/towns`;
+        //Pošalji zahtjev
+        fetch(adresa, zahtjev)
+          .then((response) => response.json())
+          .catch((error) => alert(error))
+          .then(buildTableRows)
+          .catch((error) => alert(error));
+      }
+
+      function buildTableRows(townPage) {
+        const tableBody = document.querySelector("#data-table tbody");
+        tableBody.innerHTML="";
+        const towns = townPage.towns;
+        for (let town of towns) {
+          const tRow = document.createElement("tr");
+          //ID table ćeliju
+          const tdIdCell = document.createElement("td");
+          tdIdCell.textContent = town.id;
+          tRow.appendChild(tdIdCell);
+          //Name table ćeliju
+          const tdNameCell = document.createElement("td");
+          tdNameCell.textContent = town.name;
+          tRow.appendChild(tdNameCell);
+          tableBody.appendChild(tRow);
+        }
+      }
+
+      //loadTowns();
+      loadPaginatedTowns(2, 5);
+    </script>
+  </body>
+</html>

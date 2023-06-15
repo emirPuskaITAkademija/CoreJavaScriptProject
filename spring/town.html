@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Towns</title>
+  </head>
+  <body>
+    <div id="townDiv"></div>
+
+    <script>
+      //let, const
+      const baseUrl = "http://localhost:8080/organization-1.0-SNAPSHOT";
+      function loadTowns() {
+        //zahtjev=zaglavlje+tijelo(header, body)
+        const requestObject = {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Basic aXZpY2E6aXZpY2ExMjM=",
+          },
+        };
+        //adresa url
+        const townUrl = `${baseUrl}/api/towns`;
+
+        //uputiti zahtjev da bi dobili
+        const promise = fetch(townUrl, requestObject); //Promise<Response>
+
+        promise
+          .then((response) => response.json()) //uspjeha
+          .catch((error) => console.log(error))
+          .then(obradiDobijeneRezultate)
+          .catch((error) => console.log(error)); //neuspjeh
+      }
+
+      function obradiDobijeneRezultate(towns){
+        const townDiv = document.getElementById('townDiv')
+        for(let town of towns){
+            const liElement = document.createElement('li');
+            const liContent = document.createTextNode(town.name);
+            liElement.appendChild(liContent);
+            townDiv.appendChild(liElement);
+        }
+      }
+
+      loadTowns();
+    </script>
+  </body>
+</html>
